@@ -1,6 +1,7 @@
 package AdjacencyMatrix
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -35,7 +36,7 @@ func GenerateMatrix(size int) [][]int {
 			if adjacencyMatrix[i][connection] != 0 {
 				continue
 			}
-			distance := rand.Intn(9) + 1
+			distance := rand.Intn(8) + 1
 			adjacencyMatrix[i][connection] = distance
 			//assign the other node to also be connected to i node
 			if adjacencyMatrix[connection] == nil {
@@ -48,4 +49,50 @@ func GenerateMatrix(size int) [][]int {
 		}
 	}
 	return adjacencyMatrix
+}
+
+func PrintMatrix(matrix [][]int, size int) {
+	PrintMatrixBorder(size)
+	fmt.Print("| ")
+	for x := 0; x < size; x++ {
+		if x < 9 {
+			fmt.Print(x, "  ")
+		} else {
+			if x == size-1 {
+				fmt.Println(x, "|#####|")
+			} else {
+				fmt.Print(x, " ")
+			}
+		}
+	}
+	PrintMatrixBorder(size)
+	counter := 0
+	for i := range matrix {
+		fmt.Print("| ")
+		for j := range matrix[i] {
+			if j == size-1 {
+				fmt.Print(matrix[i][j])
+			} else {
+				fmt.Print(matrix[i][j], "  ")
+			}
+		}
+		if counter < 10 {
+			fmt.Println(" | ", counter, " |")
+		} else {
+			fmt.Println(" | ", counter, "|")
+		}
+
+		counter++
+	}
+	PrintMatrixBorder(size)
+}
+
+func PrintMatrixBorder(size int) {
+	for x := 0; x < size*3+8; x++ {
+		if x == size*3+7 {
+			fmt.Println("-")
+		} else {
+			fmt.Print("-")
+		}
+	}
 }
