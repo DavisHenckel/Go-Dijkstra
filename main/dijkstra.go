@@ -6,5 +6,6 @@ import (
 )
 
 func main() {
-	fmt.Println(AdjacencyMatrix.PickMatrixSize())
+	fmt.Println(AdjacencyMatrix.PickNumNodes())
+	AdjacencyMatrix.GenerateMatrix(AdjacencyMatrix.PickNumNodes())
 }

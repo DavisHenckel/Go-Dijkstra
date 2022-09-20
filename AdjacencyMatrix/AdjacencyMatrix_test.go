@@ -2,12 +2,12 @@ package AdjacencyMatrix
 
 import "testing"
 
-func TestMatrixSize(t *testing.T) {
+func TestPickNumNodes(t *testing.T) {
 	i := 0
 	for i < 10000 {
-		num := PickMatrixSize()
+		num := PickNumNodes()
 		if num%2 != 0 || num > 50 || num < 16 {
-			t.Fatalf(`PickMatrixSize returned %v`, num)
+			t.Fatalf(`PickNumNodes returned %v`, num)
 		}
 		i++
 	}
