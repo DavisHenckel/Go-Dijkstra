@@ -24,7 +24,7 @@ func GenerateMatrix(size int) [][]int {
 	adjacencyMatrix := make([][]int, size)
 	for i := range adjacencyMatrix {
 		adjacencyMatrix[i] = make([]int, size)
-		numConnections := rand.Intn(5) + 1 //pick how many connections this node will have
+		numConnections := rand.Intn(3) + 1 //pick how many connections this node will have
 		for j := 0; j < numConnections; j++ {
 			connection := rand.Intn(size)
 			//node cannot be connected to itself
