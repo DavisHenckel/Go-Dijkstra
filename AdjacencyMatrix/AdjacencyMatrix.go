@@ -23,16 +23,21 @@ func PickNumNodes() int {
 func GenerateMatrix(size int) [][]int {
 	adjacencyMatrix := make([][]int, size)
 	for i := range adjacencyMatrix {
-		adjacencyMatrix[i] = make([]int, size)
+		if adjacencyMatrix[i] == nil {
+			adjacencyMatrix[i] = make([]int, size)
+		}
 		vertexDegree := rand.Intn(3) + 1 //pick how many connections this node will have
 		for j := 0; j < vertexDegree; j++ {
 			//ensure degree of this node is not exceeded
 			if countVertexDegree(adjacencyMatrix[i]) == vertexDegree {
+				if vertexDegree == 3 {
+					break
+				}
 				break
 			}
 			connection := rand.Intn(size)
 			//ensure connecteed node is not exceeding the possible 4 degree
-			if countVertexDegree(adjacencyMatrix[connection]) == 4 {
+			if countVertexDegree(adjacencyMatrix[connection]) >= 4 {
 				j--
 				continue
 			}
@@ -54,7 +59,6 @@ func GenerateMatrix(size int) [][]int {
 			} else {
 				adjacencyMatrix[connection][i] = distance
 			}
-
 		}
 	}
 	return adjacencyMatrix
