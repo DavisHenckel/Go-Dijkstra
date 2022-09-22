@@ -27,14 +27,7 @@ func GenerateMatrix(size int) [][]int {
 			adjacencyMatrix[i] = make([]int, size)
 		}
 		vertexDegree := rand.Intn(3) + 1 //pick how many connections this node will have
-		for j := 0; j < vertexDegree; j++ {
-			//ensure degree of this node is not exceeded
-			if countVertexDegree(adjacencyMatrix[i]) == vertexDegree {
-				if vertexDegree == 3 {
-					break
-				}
-				break
-			}
+		for j := countVertexDegree(adjacencyMatrix[i]); j < vertexDegree; j++ {
 			connection := rand.Intn(size)
 			//ensure connecteed node is not exceeding the possible 4 degree
 			if countVertexDegree(adjacencyMatrix[connection]) >= 4 {
