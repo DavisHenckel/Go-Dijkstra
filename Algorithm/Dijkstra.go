@@ -1,6 +1,7 @@
 package Algorithm
 
 import (
+	"container/heap"
 	"math"
 )
 
@@ -11,10 +12,23 @@ ENDNODE = The node to travel to
 */
 //Returns an array that displays the shortest path taken.
 func FindShortestPath(graph [][]int, startNode int, endNode int) []int {
+	prioQueue := make(PriorityQueue, 0)
+
+	currentNode := graphNode{name: startNode, previous: nil, distance: 10, index: 0}
+	currentNode1 := graphNode{name: 10, previous: &currentNode, distance: 2, index: 1}
+	// prioQueue[0] = &currentNode
+	// prioQueue[1] = &currentNode1
+	heap.Init(&prioQueue)
+	heap.Push(&prioQueue, &currentNode)
+	heap.Push(&prioQueue, &currentNode1)
 	var distancesToNodes = map[int]int{}
-	var pathTaken = make([]int, 0)
+	var nodesVisited = make([]int, 0)
+	var nodesUnvisited = make([]int, 0)
 	currentNodeConnections := graph[startNode]
 	for i := range graph {
+		//add all nodes to nodesUnvisited
+		nodesUnvisited = append(nodesUnvisited, i)
+		//setup for current node
 		if currentNodeConnections[i] == 0 {
 			distancesToNodes[i] = math.MaxInt
 		} else {
@@ -22,40 +36,51 @@ func FindShortestPath(graph [][]int, startNode int, endNode int) []int {
 		}
 	}
 	distancesToNodes[startNode] = 0
-	currentNode := startNode
+	//currentNode := graphNode{name: startNode, previous: nil, distance: 0}
+	nodesUnvisited = removeElement(nodesUnvisited, startNode)
 	//loop through every node in the graph
-	ctr := 0
-	for ctr < len(graph) {
-		currentNodeConnections = graph[currentNode]
+	for len(nodesVisited) != len(graph) {
+		currentNodeConnections = graph[currentNode.name]
 		//loop through the current nodes connections
 		for k := range currentNodeConnections {
 			//if this nodes connection is shorter than the current map of distances, update
-			if currentNodeConnections[k] < distancesToNodes[k] { //CHECK THIS
+			if currentNodeConnections[k] < distancesToNodes[k] {
+				//do something with heap here
 				distancesToNodes[k] = currentNodeConnections[k]
 			}
 		}
-		pathTaken = append(pathTaken, currentNode)
-		currentNode = GetShortestPathFromNode(currentNodeConnections, pathTaken)
-		if currentNode == math.MaxInt {
-			currentNode = pathTaken[ctr-1]
-		}
-		ctr++
+		nodesVisited = append(nodesVisited, currentNode.name)
+		nodesUnvisited = removeElement(nodesUnvisited, currentNode.name)
+		//set new current node update heap
+		//currentNode = GetShortestPathFromNode(currentNodeConnections, nodesVisited)
 	}
-	return pathTaken
+	return nodesVisited
+}
+
+func removeElement(slice []int, element int) []int {
+	var returnSlice = make([]int, 0)
+
+	for i := range slice {
+		if slice[i] == element {
+			continue
+		}
+		returnSlice = append(returnSlice, slice[i])
+	}
+	return append(returnSlice)
 }
 
 // returns index of shortest path from a given node
 func GetShortestPathFromNode(slice []int, nodesVisited []int) int {
 	shortest := math.MaxInt
 	for i := range slice {
-		if ((slice[i] < shortest) && slice[i] != 0) && Contains(nodesVisited, i) == false {
+		if ((slice[i] < shortest) && slice[i] != 0) && containsElement(nodesVisited, i) == false {
 			shortest = i
 		}
 	}
 	return shortest
 }
 
-func Contains(slice []int, element int) bool {
+func containsElement(slice []int, element int) bool {
 	for i := range slice {
 		if slice[i] == element {
 			return true
