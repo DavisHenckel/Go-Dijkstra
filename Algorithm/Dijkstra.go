@@ -12,15 +12,14 @@ ENDNODE = The node to travel to
 */
 //Returns an array that displays the shortest path taken.
 func FindShortestPath(graph [][]int, startNode int, endNode int) []int {
+	//initialize the priority queue
 	prioQueue := make(PriorityQueue, 0)
-
-	currentNode := graphNode{name: startNode, previous: nil, distance: 10, index: 0}
-	currentNode1 := graphNode{name: 10, previous: &currentNode, distance: 2, index: 1}
-	// prioQueue[0] = &currentNode
-	// prioQueue[1] = &currentNode1
+	// currentNode := graphNode{name: startNode, previous: nil, distance: 10, index: 0}
+	// currentNode1 := graphNode{name: 10, previous: &currentNode, distance: 2, index: 1}
 	heap.Init(&prioQueue)
-	heap.Push(&prioQueue, &currentNode)
-	heap.Push(&prioQueue, &currentNode1)
+	// heap.Push(&prioQueue, &currentNode)
+	// heap.Push(&prioQueue, currentNode)
+	//hashmap to keep track of overall distances.
 	var distancesToNodes = map[int]int{}
 	var nodesVisited = make([]int, 0)
 	var nodesUnvisited = make([]int, 0)
@@ -36,22 +35,28 @@ func FindShortestPath(graph [][]int, startNode int, endNode int) []int {
 		}
 	}
 	distancesToNodes[startNode] = 0
-	//currentNode := graphNode{name: startNode, previous: nil, distance: 0}
+	currentNode := graphNode{name: startNode, previous: nil, distance: 0}
 	nodesUnvisited = removeElement(nodesUnvisited, startNode)
 	//loop through every node in the graph
 	for len(nodesVisited) != len(graph) {
 		currentNodeConnections = graph[currentNode.name]
 		//loop through the current nodes connections
-		for k := range currentNodeConnections {
+		for i := range currentNodeConnections {
+			var nodeToAdd graphNode
+			if currentNodeConnections[i] != 0 {
+				nodeToAdd = graphNode{name: i, previous: &currentNode, distance: currentNodeConnections[i]}
+				heap.Push(&prioQueue, &nodeToAdd)
+			}
 			//if this nodes connection is shorter than the current map of distances, update
-			if currentNodeConnections[k] < distancesToNodes[k] {
+			if currentNodeConnections[i] < distancesToNodes[i] && currentNodeConnections[i] != 0 {
 				//do something with heap here
-				distancesToNodes[k] = currentNodeConnections[k]
+				distancesToNodes[i] = currentNodeConnections[i]
 			}
 		}
 		nodesVisited = append(nodesVisited, currentNode.name)
 		nodesUnvisited = removeElement(nodesUnvisited, currentNode.name)
-		//set new current node update heap
+		newNode := heap.Pop(&prioQueue).(*graphNode)
+		currentNode = *newNode
 		//currentNode = GetShortestPathFromNode(currentNodeConnections, nodesVisited)
 	}
 	return nodesVisited
