@@ -74,18 +74,6 @@ func FindShortestPath(graph [][]int, startNode int, endNode int) (*GraphNode, ma
 	return finalNode, nodesDistances
 }
 
-func removeElement(slice []int, element int) []int {
-	var returnSlice = make([]int, 0)
-
-	for i := range slice {
-		if slice[i] == element {
-			continue
-		}
-		returnSlice = append(returnSlice, slice[i])
-	}
-	return append(returnSlice)
-}
-
 // returns Index of shortest path from a given node
 func GetShortestPathFromNode(slice []int, nodesVisited []int) int {
 	shortest := math.MaxInt
