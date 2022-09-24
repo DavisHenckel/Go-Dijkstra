@@ -2,6 +2,7 @@ package Algorithm
 
 import (
 	"container/heap"
+	"errors"
 	"math"
 )
 
@@ -72,6 +73,29 @@ func FindShortestPath(graph [][]int, startNode int, endNode int) (*GraphNode, ma
 		}
 	}
 	return finalNode, nodesDistances
+}
+
+func GetNodesPathTraversed(node *GraphNode) ([]int, error) {
+	if node == nil {
+		return nil, errors.New("node passed was a nullptr")
+	}
+	//store node named into array
+	pathTaken := make([]int, 0)
+	pathTakenReversed := make([]int, 0)
+	pathTaken = append(pathTaken, node.Name)
+	tmp := node.Previous
+	for tmp != nil {
+		pathTaken = append(pathTaken, tmp.Name)
+		tmp = tmp.Previous
+	}
+
+	//reverse the slice
+	i := len(pathTaken) - 1
+	for i >= 0 {
+		pathTakenReversed = append(pathTakenReversed, pathTaken[i])
+		i--
+	}
+	return pathTakenReversed, nil
 }
 
 // returns Index of shortest path from a given node
