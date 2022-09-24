@@ -33,7 +33,7 @@ func FindShortestPath(graph [][]int, startNode int, endNode int) (*GraphNode, ma
 			distancesToNodes[i] = math.MaxInt
 			ithNode := GraphNode{Name: i, Previous: nil, Distance: math.MaxInt, Index: i}
 			heap.Push(&prioQueue, &ithNode)
-			distancesToNodes[i] = math.MaxInt
+			nodesDistances[i] = &ithNode
 		}
 	}
 	//loop through every node in the graph
@@ -60,9 +60,15 @@ func FindShortestPath(graph [][]int, startNode int, endNode int) (*GraphNode, ma
 				//update the node only if the Distance has changed
 				//if this nodes connection is shorter than the current map of distances, update the hashmap
 				if currentNodeConnections[i]+currentNode.Distance < distancesToNodes[i] {
-					distancesToNodes[i] = currentNodeConnections[i] + currentNode.Distance
+					if !(currentNode.Distance+currentNodeConnections[i] < 0) {
+						distancesToNodes[i] = currentNodeConnections[i] + currentNode.Distance
+					}
 					if nodeToUpdate != nil {
-						prioQueue.update(nodeToUpdate, currentNodeConnections[i]+currentNode.Distance, currentNode)
+						if !(currentNode.Distance+currentNodeConnections[i] < 0) {
+							prioQueue.update(nodeToUpdate, currentNodeConnections[i]+currentNode.Distance, currentNode)
+						} else {
+							prioQueue.update(nodeToUpdate, currentNode.Distance, currentNode)
+						}
 						nodesDistances[nodeToUpdate.Name] = nodeToUpdate
 						if endNode == nodeToUpdate.Name {
 							finalNode = nodeToUpdate
