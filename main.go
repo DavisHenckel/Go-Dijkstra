@@ -14,7 +14,7 @@ func main() {
 	fmt.Println("\nThe number of nodes in this graph is", numNodes)
 	Graph := AdjacencyMatrix.GenerateMatrix(numNodes)
 	AdjacencyMatrix.PrintMatrix(Graph, numNodes)
-	finalNode := Algorithm.FindShortestPath(Graph, startNode, endNode)
+	finalNode, allNodes := Algorithm.FindShortestPath(Graph, startNode, endNode)
 	if finalNode != nil {
 		fmt.Println("Found the shortest path to node ", finalNode.Name, ", the distance was ", finalNode.Distance)
 		pathTaken := make([]int, 0)
@@ -36,6 +36,12 @@ func main() {
 		}
 	} else {
 		fmt.Println("It was not possible to travel from nodes ", startNode, "->", endNode)
+	}
+	i := 0
+	for i < len(allNodes) {
+		t := allNodes[i]
+		fmt.Println(t.Name, " -- ", allNodes[i].Distance)
+		i++
 	}
 
 }
