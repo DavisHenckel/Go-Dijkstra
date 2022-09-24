@@ -18,11 +18,12 @@ func FindShortestPath(graph [][]int, startNode int, endNode int) *GraphNode {
 	var finalNode *GraphNode
 	//hashmap to keep track of overall distances.
 	var distancesToNodes = map[int]int{}
+	//var nodesDistances = map[int]*GraphNode{}
 	currentNodeConnections := graph[startNode]
 	//add all nodes to priority queue with int max as the Distance
 	for i := range graph {
-		if i == 0 {
-			ithNode := GraphNode{Name: startNode, Previous: nil, Distance: 0, Index: i}
+		if i == startNode {
+			ithNode := GraphNode{Name: startNode, Previous: nil, Distance: 0, Index: 0}
 			heap.Push(&prioQueue, &ithNode)
 			distancesToNodes[startNode] = 0
 		} else {
@@ -36,6 +37,9 @@ func FindShortestPath(graph [][]int, startNode int, endNode int) *GraphNode {
 	for len(prioQueue) > 0 {
 		currentNode := heap.Pop(&prioQueue).(*GraphNode)
 		currentNodeConnections = graph[currentNode.Name]
+		if currentNode.Distance < distancesToNodes[currentNode.Name] {
+			distancesToNodes[currentNode.Name] = currentNode.Distance
+		}
 		//loop through the current nodes connections
 		for i := range currentNodeConnections {
 			if currentNodeConnections[i] != 0 {
