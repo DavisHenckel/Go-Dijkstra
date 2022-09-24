@@ -46,9 +46,9 @@ func (pq *PriorityQueue) Pop() any {
 	return item
 }
 
-// update modifies the distance and name of an Item in the queue.
-func (pq *PriorityQueue) update(item *graphNode, name int, distance int) {
-	item.name = name
+// update modifies the distance and previous of an Item in the queue.
+func (pq *PriorityQueue) update(item *graphNode, distance int, previous *graphNode) {
 	item.distance = distance
+	item.previous = previous
 	heap.Fix(pq, item.index)
 }
