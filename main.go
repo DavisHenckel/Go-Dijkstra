@@ -102,7 +102,8 @@ func pickStartNode(graphSize int) int {
 }
 
 func main() {
-	fmt.Println("Welcome to Davis Henckel's implementation of Dijkstra's Algorithm written in Go.\n================================================================================")
+	fmt.Print("Welcome to Davis Henckel's implementation of Dijkstra's Algorithm written in Go.")
+	fmt.Print("================================================================================")
 	numNodes := getNumNodes()
 	fmt.Println("\nThe number of nodes in this graph is", numNodes)
 	Graph := AdjacencyMatrix.GenerateMatrix(numNodes)
@@ -131,8 +132,4 @@ func main() {
 			userInput = printMenu()
 		}
 	}
-	// finalNode, allNodes := Algorithm.FindShortestPath(Graph, startNode, endNode)
-	// printResult(*finalNode, startNode, endNode)
-	// printNodeDistances(allNodes, startNode)
-
 }
