@@ -72,8 +72,8 @@ func getNumNodes() int {
 		numNodes = AdjacencyMatrix.PickNumNodes()
 		break
 	}
-	if numNodes < 9 {
-		fmt.Println("Nodes must be at least 10. Selecting 10 for now...")
+	if numNodes < 9 || numNodes > 1000 {
+		fmt.Println("Nodes must be at least 10 and no more than 1000. Selecting 10 for now...")
 		numNodes = 10
 	}
 	return numNodes
@@ -136,7 +136,6 @@ func main() {
 	fmt.Println("Welcome to Davis Henckel's implementation of Dijkstra's Algorithm written in Go.")
 	fmt.Println("================================================================================")
 	numNodes := getNumNodes()
-	fmt.Println("\nThe number of nodes in this graph is", numNodes)
 	Graph := AdjacencyMatrix.GenerateMatrix(numNodes)
 	userInput := printMenu()
 	i := 0
