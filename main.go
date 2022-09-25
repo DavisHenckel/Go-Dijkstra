@@ -4,6 +4,7 @@ import (
 	"Coding/Go/Go-Dijkstra/AdjacencyMatrix"
 	"Coding/Go/Go-Dijkstra/Algorithm"
 	"fmt"
+	"math"
 )
 
 // graph for testing. There are 3 separate graphs
@@ -34,12 +35,20 @@ func printNodeDistances(allNodes map[int]*Algorithm.GraphNode, startNode int) {
 	fmt.Println("Total distances from", startNode, "to each node")
 	i := 0
 	for i < len(allNodes) {
+		if allNodes[i].Distance == math.MaxInt {
+			fmt.Println("Node:", allNodes[i].Name, "-- Path does not exist")
+			i++
+		}
 		fmt.Println("Node:", allNodes[i].Name, "-- Distance:", allNodes[i].Distance)
 		i++
 	}
 }
 
 func printResult(finalNode Algorithm.GraphNode, startNode int, endNode int) {
+	if finalNode.Distance == math.MaxInt {
+		fmt.Println("There is no path from node", startNode, "to node", endNode)
+		return
+	}
 	fmt.Println("Shortest distance from node", startNode, "to node", endNode, "is", finalNode.Distance)
 	fmt.Print("The path is: ")
 	pathTaken, error := Algorithm.GetNodesPathTraversed(&finalNode)
@@ -63,6 +72,10 @@ func getNumNodes() int {
 		numNodes = AdjacencyMatrix.PickNumNodes()
 		break
 	}
+	if numNodes < 9 {
+		fmt.Println("Nodes must be at least 10. Selecting 10 for now...")
+		numNodes = 10
+	}
 	return numNodes
 }
 
@@ -84,7 +97,7 @@ func pickEndNode(graphSize int) int {
 	fmt.Print("Pick destination node: ")
 	fmt.Scan(&nodeB)
 	for nodeB > graphSize || nodeB < 0 {
-		fmt.Print("Node", nodeB, "doesn't exist in this graph")
+		fmt.Print("Node: ", nodeB, "doesn't exist in this graph\nPick desintation node: ")
 		fmt.Scan(&nodeB)
 	}
 	return nodeB
@@ -101,9 +114,27 @@ func pickStartNode(graphSize int) int {
 	return nodeA
 }
 
+func printSpecificNodePath(nodes map[int]*Algorithm.GraphNode, startNode int) {
+	var nodeChosen int
+	i := 0
+	for i < 2 {
+		fmt.Print("Enter any node to see its path, enter any key to return to the menu: ")
+		_, err := fmt.Scan(&nodeChosen)
+		if err != nil {
+			return
+		}
+		if nodeChosen > len(nodes)-1 || nodeChosen < 0 {
+			continue
+		} else {
+			printResult(*nodes[nodeChosen], startNode, nodeChosen)
+		}
+	}
+
+}
+
 func main() {
-	fmt.Print("Welcome to Davis Henckel's implementation of Dijkstra's Algorithm written in Go.")
-	fmt.Print("================================================================================")
+	fmt.Println("Welcome to Davis Henckel's implementation of Dijkstra's Algorithm written in Go.")
+	fmt.Println("================================================================================")
 	numNodes := getNumNodes()
 	fmt.Println("\nThe number of nodes in this graph is", numNodes)
 	Graph := AdjacencyMatrix.GenerateMatrix(numNodes)
@@ -124,6 +155,7 @@ func main() {
 			startNode := pickStartNode(len(Graph))
 			_, allNodes := Algorithm.FindShortestPath(Graph, startNode, 10)
 			printNodeDistances(allNodes, startNode)
+			printSpecificNodePath(allNodes, startNode)
 			userInput = printMenu()
 		case 4:
 			numNodes := getNumNodes()
