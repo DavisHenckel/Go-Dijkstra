@@ -64,6 +64,22 @@ func countVertexDegree(vertexSlice []int) int {
 	return numConnections
 }
 
+func PrintRawMatrix(matrix [][]int, delimiter string) {
+	if len(delimiter) != 1 {
+		fmt.Println("delimiter must be of length 1. Setting to ',' for now")
+		delimiter = ","
+	}
+	for x := 0; x < len(matrix); x++ {
+		for y := 0; y < len(matrix); y++ {
+			if y == len(matrix)-1 {
+				fmt.Println(matrix[x][y])
+			} else {
+				fmt.Print(matrix[x][y], delimiter)
+			}
+		}
+	}
+}
+
 func PrintMatrix(matrix [][]int, size int) {
 	PrintMatrixBorder(size)
 	fmt.Print("| ")
