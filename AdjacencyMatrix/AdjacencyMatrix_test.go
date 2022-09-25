@@ -9,7 +9,7 @@ func TestPickNumNodes(t *testing.T) {
 	i := 0
 	for i < 10000 {
 		num := PickNumNodes()
-		if num%2 != 0 || num > 50 || num < 16 {
+		if num > 75 || num < 15 {
 			t.Fatalf(`PickNumNodes returned %v`, num)
 		}
 		i++
