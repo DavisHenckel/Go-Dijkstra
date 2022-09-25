@@ -7,36 +7,12 @@ import (
 	"math"
 )
 
-// graph for testing. There are 3 separate graphs
-var disconnectedGraph = [][]int{
-	{0, 0, 0, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0},
-	{0, 0, 8, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 5, 0, 0},
-	{0, 0, 0, 0, 0, 0, 5, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-	{0, 3, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 5, 0, 6, 0, 0, 0},
-	{0, 4, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-	{0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0},
-	{6, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0},
-}
-
 func printNodeDistances(allNodes map[int]*Algorithm.GraphNode, startNode int) {
 	fmt.Println("Total distances from", startNode, "to each node")
 	i := 0
 	for i < len(allNodes) {
 		if allNodes[i].Distance == math.MaxInt {
-			fmt.Println("Node:", allNodes[i].Name, "-- Path does not exist")
+			fmt.Println("Node", allNodes[i].Name, "-- Path does not exist")
 			i++
 		}
 		fmt.Println("Node:", allNodes[i].Name, "-- Distance:", allNodes[i].Distance)
@@ -81,12 +57,13 @@ func getNumNodes() int {
 
 func printMenu() int {
 	var choice int
-	for choice < 1 || choice > 4 {
+	for choice < 1 || choice > 5 {
 		fmt.Println("\nPlease choose from the following options")
 		fmt.Println("1: Print Adjacency Matrix")
-		fmt.Println("2: Find Shortest Path from Node A to B")
-		fmt.Println("3: Find Shortest Path to all Nodes")
-		fmt.Println("4: Create New Adjacency Matrix")
+		fmt.Println("2: Print Raw Matrix (easy copy/paste)")
+		fmt.Println("3: Find Shortest Path from Node A to B")
+		fmt.Println("4: Find Shortest Path to all Nodes")
+		fmt.Println("5: Create New Adjacency Matrix")
 		fmt.Scan(&choice)
 	}
 	return choice
@@ -96,8 +73,8 @@ func pickEndNode(graphSize int) int {
 	var nodeB int
 	fmt.Print("Pick destination node: ")
 	fmt.Scan(&nodeB)
-	for nodeB > graphSize || nodeB < 0 {
-		fmt.Print("Node: ", nodeB, "doesn't exist in this graph\nPick desintation node: ")
+	for nodeB > graphSize-1 || nodeB < 0 {
+		fmt.Print("Node: ", nodeB, " doesn't exist in this graph\nPick desintation node: ")
 		fmt.Scan(&nodeB)
 	}
 	return nodeB
@@ -107,8 +84,8 @@ func pickStartNode(graphSize int) int {
 	var nodeA int
 	fmt.Print("Pick starting node: ")
 	fmt.Scan(&nodeA)
-	for nodeA > graphSize || nodeA < 0 {
-		fmt.Print("Node", nodeA, "doesn't exist in this graph")
+	for nodeA > graphSize-1 || nodeA < 0 {
+		fmt.Print("Node ", nodeA, " doesn't exist in this graph\nPick starting node: ")
 		fmt.Scan(&nodeA)
 	}
 	return nodeA
@@ -145,18 +122,25 @@ func main() {
 			AdjacencyMatrix.PrintMatrix(Graph, len(Graph))
 			userInput = printMenu()
 		case 2:
+			AdjacencyMatrix.PrintRawMatrix(Graph, ",")
+			userInput = printMenu()
+		case 3:
 			startNode := pickStartNode(len(Graph))
 			endNode := pickEndNode(len(Graph))
 			finalNode, _ := Algorithm.FindShortestPath(Graph, startNode, endNode)
-			printResult(*finalNode, startNode, endNode)
+			if finalNode == nil {
+				fmt.Println("There is no path from node", startNode, "to node", endNode)
+			} else {
+				printResult(*finalNode, startNode, endNode)
+			}
 			userInput = printMenu()
-		case 3:
+		case 4:
 			startNode := pickStartNode(len(Graph))
 			_, allNodes := Algorithm.FindShortestPath(Graph, startNode, 10)
 			printNodeDistances(allNodes, startNode)
 			printSpecificNodePath(allNodes, startNode)
 			userInput = printMenu()
-		case 4:
+		case 5:
 			numNodes := getNumNodes()
 			fmt.Println("\nThe number of nodes in this graph is", numNodes)
 			Graph = AdjacencyMatrix.GenerateMatrix(numNodes)
