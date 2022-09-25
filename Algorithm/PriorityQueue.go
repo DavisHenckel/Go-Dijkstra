@@ -6,33 +6,33 @@ import (
 
 //example code taken and modified from https://pkg.go.dev/container/heap@go1.19.1
 
-type graphNode struct {
-	name     int
-	previous *graphNode
-	distance int
-	index    int
+type GraphNode struct {
+	Name     int
+	Previous *GraphNode
+	Distance int
+	Index    int
 }
 
 // A PriorityQueue implements heap.Interface and holds Items.
-type PriorityQueue []*graphNode
+type PriorityQueue []*GraphNode
 
 func (pq PriorityQueue) Len() int { return len(pq) }
 
 func (pq PriorityQueue) Less(i, j int) bool {
-	// Want Pop to give us the lowest, not highest, distance so use greater than here.
-	return pq[i].distance < pq[j].distance
+	// Want Pop to give us the lowest, not highest, Distance so use greater than here.
+	return pq[i].Distance < pq[j].Distance
 }
 
 func (pq PriorityQueue) Swap(i, j int) {
 	pq[i], pq[j] = pq[j], pq[i]
-	pq[i].index = i
-	pq[j].index = j
+	pq[i].Index = i
+	pq[j].Index = j
 }
 
 func (pq *PriorityQueue) Push(x any) {
 	n := len(*pq)
-	item := x.(*graphNode)
-	item.index = n
+	item := x.(*GraphNode)
+	item.Index = n
 	*pq = append(*pq, item)
 }
 
@@ -41,14 +41,14 @@ func (pq *PriorityQueue) Pop() any {
 	n := len(old)
 	item := old[n-1]
 	old[n-1] = nil  // avoid memory leak
-	item.index = -1 // for safety
+	item.Index = -1 // for safety
 	*pq = old[0 : n-1]
 	return item
 }
 
-// update modifies the distance and previous of an Item in the queue.
-func (pq *PriorityQueue) update(item *graphNode, distance int, previous *graphNode) {
-	item.distance = distance
-	item.previous = previous
-	heap.Fix(pq, item.index)
+// update modifies the Distance and Previous of an Item in the queue.
+func (pq *PriorityQueue) update(item *GraphNode, Distance int, Previous *GraphNode) {
+	item.Distance = Distance
+	item.Previous = Previous
+	heap.Fix(pq, item.Index)
 }

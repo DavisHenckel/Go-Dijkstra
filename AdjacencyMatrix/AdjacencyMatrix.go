@@ -10,12 +10,9 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// returns an even number, with a minimum of 16 and a maximum of 50
+// returns an even number, with a minimum of 15 and a maximum of 75
 func PickNumNodes() int {
-	returnValue := rand.Intn(34) + 16
-	for returnValue%2 != 0 {
-		returnValue = rand.Intn(34) + 16
-	}
+	returnValue := rand.Intn(60) + 15
 	return returnValue
 }
 
@@ -65,6 +62,22 @@ func countVertexDegree(vertexSlice []int) int {
 		}
 	}
 	return numConnections
+}
+
+func PrintRawMatrix(matrix [][]int, delimiter string) {
+	if len(delimiter) != 1 {
+		fmt.Println("delimiter must be of length 1. Setting to ',' for now")
+		delimiter = ","
+	}
+	for x := 0; x < len(matrix); x++ {
+		for y := 0; y < len(matrix); y++ {
+			if y == len(matrix)-1 {
+				fmt.Println(matrix[x][y])
+			} else {
+				fmt.Print(matrix[x][y], delimiter)
+			}
+		}
+	}
 }
 
 func PrintMatrix(matrix [][]int, size int) {
