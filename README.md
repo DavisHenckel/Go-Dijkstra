@@ -67,6 +67,9 @@ Node: 9 -- Distance: 6
 ```
 Select option 4 to create a new adjacency matrix and recreate the process. During development I used an awesome tool [Graph Online](https://graphonline.ru/en/) to input the adjacency matrices to visualize the graph and double check the solution provided.  
   
-  Select option 5 to print the graph in an easy copy/paste format to easily input it on [Graph Online](https://graphonline.ru/en/)!
+  Select option 5 to print the graph in an easy copy/paste format to easily input it on [Graph Online](https://graphonline.ru/en/)!  
+
+Here is what the above graph looks like on [Graph Online](https://graphonline.ru/en/)  
+![GraphImage](/ExampleGraph.png)
   
 ### Thanks for checking out my first Go Project!
